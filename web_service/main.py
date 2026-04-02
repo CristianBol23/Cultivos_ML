@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from routers import cultivos_routers
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
