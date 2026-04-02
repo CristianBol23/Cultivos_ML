@@ -138,7 +138,9 @@
             document.getElementById("loading").innerText = "";
 
             document.getElementById("result").innerText =
-                "🌾 Cultivo recomendado: " + result.prediction.predicción;
+                "🌾 Cultivo recomendado: " + result.prediction.prediction;
+            
+                console.log("RESPUESTA:", result);
 
         } catch (error) {
             console.error("ERROR REAL:", error);
