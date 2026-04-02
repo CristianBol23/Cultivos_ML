@@ -141,9 +141,10 @@
                 "🌾 Cultivo recomendado: " + result.prediction.prediction;
 
         } catch (error) {
+            console.error("ERROR REAL:", error);
             document.getElementById("loading").innerText = "";
             document.getElementById("result").innerText =
-                "❌ Error al conectar con la API";
+            "❌ Error: " + error;
         }
     }
 </script>
