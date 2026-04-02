@@ -137,10 +137,10 @@
 
             document.getElementById("loading").innerText = "";
 
+            console.log("RESPUESTA:", result);
             document.getElementById("result").innerText =
                 "🌾 Cultivo recomendado: " + result.predicción;
             
-                console.log("RESPUESTA:", result);
 
         } catch (error) {
             console.error("ERROR REAL:", error);
