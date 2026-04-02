@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Recomendación de cultivos AI</title>
+
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background: linear-gradient(135deg, #4CAF50, #2E7D32);
+        margin: 0;
+        padding: 0;
+        color: #333;
+    }
+
+    .container {
+        max-width: 500px;
+        margin: 50px auto;
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    h1 {
+        text-align: center;
+        color: #2E7D32;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        background: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: 0.3s;
+    }
+
+    button:hover {
+        background: #388E3C;
+    }
+
+    .result {
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 10px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 18px;
+        background: #E8F5E9;
+        color: #2E7D32;
+    }
+
+    .loading {
+        text-align: center;
+        margin-top: 10px;
+        color: #555;
+    }
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+    <h1>🌱 Predicción de cultivos</h1>
+
+    <!-- Inputs -->
+    <input type="number" id="N" placeholder="Nitrógeno (N)">
+    <input type="number" id="P" placeholder="Fósforo (P)">
+    <input type="number" id="K" placeholder="Potasio (K)">
+    <input type="number" id="temperature" placeholder="Temperatura">
+    <input type="number" id="humidity" placeholder="Humedad">
+    <input type="number" id="ph" placeholder="pH">
+    <input type="number" id="rainfall" placeholder="Lluvia">
+
+    <!-- Selector -->
+    <select id="model">
+        <option value="rf">Random Forest</option>
+        <option value="svm">SVM</option>
+    </select>
+
+    <!-- Botón -->
+    <button onclick="predict()">Predecir cultivo</button>
+
+    <div class="loading" id="loading"></div>
+
+    <!-- Resultado -->
+    <div class="result" id="result">Resultado aparecerá aquí</div>
+</div>
+
+<script>
+    const URL_API = "https://cultivos-ml.onrender.com/"; 
+
+    async function predict() {
+
+        const data = {
+            N: parseInt(document.getElementById("N").value),
+            P: parseInt(document.getElementById("P").value),
+            K: parseInt(document.getElementById("K").value),
+            temperature: parseFloat(document.getElementById("temperature").value),
+            humidity: parseFloat(document.getElementById("humidity").value),
+            ph: parseFloat(document.getElementById("ph").value),
+            rainfall: parseFloat(document.getElementById("rainfall").value)
+        };
+
+        const model = document.getElementById("model").value;
+
+        const endpoint = model === "rf" ? "/predict/rf" : "/predict/svm";
+
+        document.getElementById("loading").innerText = "Procesando...";
+        document.getElementById("result").innerText = "";
+
+        try {
+            const response = await fetch(URL_API + endpoint, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+
+            document.getElementById("loading").innerText = "";
+
+            document.getElementById("result").innerText =
+                "🌾 Cultivo recomendado: " + result.prediction;
+
+        } catch (error) {
+            document.getElementById("loading").innerText = "";
+            document.getElementById("result").innerText =
+                "❌ Error al conectar con la API";
+        }
+    }
+</script>
+
+</body>
+</html>
