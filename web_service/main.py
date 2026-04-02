@@ -3,6 +3,15 @@ from routers import cultivos_routers
 
 app = FastAPI()
 
+# SOLUCIÓN CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # puedes restringir luego
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 app.include_router(cultivos_routers.router)
 
 @app.get("/")
